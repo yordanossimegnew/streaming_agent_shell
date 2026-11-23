@@ -1,4 +1,4 @@
-# 03 · Streaming Agent Shell
+# Streaming Agent Shell
 
 An AI agent that works in a terminal. You give it a task, and it runs bash commands in a
 sandbox folder. **Claude's reply streams token by token, and every command's output streams line
@@ -52,7 +52,7 @@ Built with **LangGraph** (interrupts and a checkpointer for human-in-the-loop ap
 ## Project structure
 
 ```
-03-streaming-agent-shell/
+streaming-agent-shell/
 ├── README.md
 ├── requirements.txt
 ├── .env.example            # copy to .env (never commit .env)
@@ -98,7 +98,7 @@ Built with **LangGraph** (interrupts and a checkpointer for human-in-the-loop ap
 ## Setup
 
 ```bash
-cd 03-streaming-agent-shell
+cd streaming-agent-shell
 python -m venv .venv
 # Windows: .venv\Scripts\activate   |   macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
