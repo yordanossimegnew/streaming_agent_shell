@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Explore the sandbox",
+    "task": "Look around the sandbox and tell me what's in it: files, sizes, and what the project seems to be."
+  },
+  {
+    "name": "Write and run a script",
+    "task": "Write a small Python script primes.py that prints the first 15 prime numbers, run it, and show me the output."
+  },
+  {
+    "name": "Find TODOs",
+    "task": "Find every TODO or FIXME comment in the sandbox and summarise them as a checklist grouped by file."
+  },
+  {
+    "name": "Disk usage report",
+    "task": "Which files and folders take the most space in the sandbox? Show the top 5."
+  }
+]
