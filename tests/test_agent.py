@@ -12,12 +12,12 @@ from tests.fakes import ScriptedChatModel, cmd, say, write
 
 def make(settings, script):
     llm = ScriptedChatModel(script)
-    return build_agent(settings, open_checkpointer(settings.sessions_dir), llm=llm), llm
+    return build_agent(settings, open_checkpointer(settings.database_url), llm=llm), llm
 
 
-def turn(agent, **kwargs):
+def turn(agent, session="s1", **kwargs):
     events = []
-    result = run_turn(agent, "s1", events.append, **kwargs)
+    result = run_turn(agent, session, events.append, **kwargs)
     return result, events
 
 
@@ -94,9 +94,8 @@ def test_approval_modes(settings):
     result, _ = turn(agent, message="go")
     assert result["status"] == "completed" and (settings.sandbox / "a.txt").exists()
 
-    agent, _ = make(replace(settings, approval_mode="readonly", sessions_dir=settings.sessions_dir / "ro"),
-                    [say("", cmd("c1", "echo x > b.txt")), say("ok")])
-    result, events = turn(agent, message="go")
+    agent, _ = make(replace(settings, approval_mode="readonly"), [say("", cmd("c1", "echo x > b.txt")), say("ok")])
+    result, events = turn(agent, session="s2", message="go")
     assert result["status"] == "completed" and not (settings.sandbox / "b.txt").exists()
     assert "read-only mode" in next(e for e in events if e["type"] == "refused")["reason"]
 

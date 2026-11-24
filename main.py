@@ -52,7 +52,7 @@ def cli() -> None:
     from src.agent import open_checkpointer
     from src.api.sessions import SessionManager
 
-    manager = SessionManager(settings, open_checkpointer(settings.sessions_dir))
+    manager = SessionManager(settings, open_checkpointer(settings.database_url))
     session = manager.create()
     print(f"{DIM}sandbox: {settings.sandbox} · shell: {settings.shell_path} · mode: {settings.approval_mode}{RESET}")
     print("Type a task. 'exit' to quit.\n")

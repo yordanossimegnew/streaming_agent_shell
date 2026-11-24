@@ -9,13 +9,30 @@ on:
 jobs:
   pytest:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ci -d ci"
+          --health-interval 2s --health-retries 30
+    env:
+      TEST_DATABASE_URL: postgresql://ci:ci@localhost:5432/streaming_agent_shell_test
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
+      - name: Create the test database
+        run: PGPASSWORD=ci psql -h localhost -U ci -d ci -c "CREATE DATABASE streaming_agent_shell_test"
       - run: pip install -r requirements.txt
+      - name: Lint
+        run: pip install ruff && ruff check .
       - name: Run the test suite (fails if any test is skipped)
         run: |
           set -o pipefail

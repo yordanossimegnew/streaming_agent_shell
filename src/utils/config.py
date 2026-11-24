@@ -36,7 +36,7 @@ class Settings:
     approval_mode: str = "ask"
     log_level: str = "INFO"
     log_dir: Path = PROJECT_ROOT / "logs"
-    sessions_dir: Path = PROJECT_ROOT / "data" / "sessions"
+    database_url: str = "postgresql://postgres:postgres@localhost:5432/streaming_agent_shell"
     knowledge_base_dir: Path = PROJECT_ROOT / "data" / "knowledge_base"
 
     @property
@@ -60,6 +60,7 @@ def load_settings(**overrides) -> Settings:
         command_timeout=int(os.getenv("SHELL_COMMAND_TIMEOUT", Settings.command_timeout)),
         approval_mode=mode,
         log_level=os.getenv("LOG_LEVEL", Settings.log_level),
+        database_url=os.getenv("DATABASE_URL", Settings.database_url),
     )
     clean = {k: v for k, v in overrides.items() if v is not None}
     if "sandbox" in clean:

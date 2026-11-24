@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 # Commands run as an unprivileged user that can only write to the sandbox and data dirs.
-RUN useradd --create-home agent && mkdir -p /app/sandbox /app/data/sessions /app/logs \
+RUN useradd --create-home agent && mkdir -p /app/sandbox /app/logs \
     && chown -R agent:agent /app/sandbox /app/data /app/logs
 USER agent
 

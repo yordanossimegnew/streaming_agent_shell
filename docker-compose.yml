@@ -1,12 +1,29 @@
 services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: agent
+      POSTGRES_PASSWORD: agent
+      POSTGRES_DB: streaming_agent_shell
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agent -d streaming_agent_shell"]
+      interval: 2s
+      retries: 20
+
   api:
     build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://agent:agent@postgres:5432/streaming_agent_shell
     ports:
       - "8000:8000"
     env_file: .env
     volumes:
       - ./sandbox:/app/sandbox            # the only folder shared with your machine
-      - ./data/sessions:/app/data/sessions
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
     pids_limit: 256
@@ -21,3 +38,6 @@ services:
       AGENT_API_URL: http://api:8000
     depends_on:
       - api
+
+volumes:
+  pgdata:

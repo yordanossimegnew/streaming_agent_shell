@@ -1,0 +1,14 @@
+target-version = "py312"
+line-length = 120
+extend-exclude = ["data", "workspace", "sandbox", "logs"]
+
+[lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
+ignore = [
+  "B008",  # File()/Depends() in FastAPI signatures is the framework's idiom
+  "B905",  # zip() over sequences built to the same length
+  "E741",  # `l` for a line in short comprehensions
+]
+
+[lint.isort]
+known-first-party = ["src"]

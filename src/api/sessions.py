@@ -89,7 +89,7 @@ class SessionManager:
         index = start
         while True:
             with session.cond:
-                session.cond.wait_for(lambda: len(session.events) > index or session.status != "running",
+                session.cond.wait_for(lambda: len(session.events) > index or session.status != "running",  # noqa: B023 (called before index changes)
                                       timeout=keepalive)
                 batch = session.events[index:]
                 finished = session.status != "running"

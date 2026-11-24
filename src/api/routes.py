@@ -11,15 +11,22 @@ from fastapi.responses import StreamingResponse
 from ..agent import build_agent, open_checkpointer, transcript, validate_session_id
 from ..tools import classify
 from ..utils.config import Settings, load_settings
-from .schemas import (ApprovalRequest, HealthResponse, MessageRequest, PolicyCheck, SessionDetail,
-                      SessionSummary, TurnStarted)
+from .schemas import (
+    ApprovalRequest,
+    HealthResponse,
+    MessageRequest,
+    PolicyCheck,
+    SessionDetail,
+    SessionSummary,
+    TurnStarted,
+)
 from .sessions import Session, SessionBusy, SessionManager
 
 
 def create_app(settings: Settings | None = None, llm_factory: Callable[[], Any] | None = None) -> FastAPI:
     settings = settings or load_settings()
     app = FastAPI(title="Streaming Agent Shell", version="1.0.0")
-    checkpointer = open_checkpointer(settings.sessions_dir)
+    checkpointer = open_checkpointer(settings.database_url)
     sessions = SessionManager(settings, checkpointer, llm_factory=llm_factory)
 
     def get_session(session_id: str) -> Session:
