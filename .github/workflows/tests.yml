@@ -1,0 +1,29 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run the test suite (fails if any test is skipped)
+        run: |
+          set -o pipefail
+          python -m pytest tests -q -rs -p no:cacheprovider | tee pytest.out
+          ! grep -qiE "[0-9]+ skipped" pytest.out
+      - name: Report failures as annotations
+        if: failure()
+        run: |
+          grep -E "^(FAILED|ERROR)|^E  |Error:|SKIPPED" pytest.out | head -30 | while IFS= read -r line; do
+            echo "::error::$line"
+          done

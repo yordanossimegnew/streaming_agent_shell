@@ -1,5 +1,7 @@
 # Streaming Agent Shell
 
+[![tests](https://github.com/yordanossimegnew/streaming_agent_shell/actions/workflows/tests.yml/badge.svg)](https://github.com/yordanossimegnew/streaming_agent_shell/actions/workflows/tests.yml)
+
 An AI agent that works in a terminal. You give it a task, and it runs bash commands in a
 sandbox folder. **Claude's reply streams token by token, and every command's output streams line
 by line**, live, into a terminal-style UI. Read-only commands run on their own. Anything that
